@@ -1,6 +1,6 @@
 # 1
-all eat
-all dance
+users eat
+sources dance
 # 2
 all sleep
 # 3

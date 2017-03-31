@@ -5,7 +5,4 @@ come unire networkx SLAPP
 parole chiave -> do1 do2 etc...
 implementare membri agents comuni a users e sources
 implementare metodi di users
-implementare metodi sources
-
-
-dire a terna che e` un vecchio bastardo
+implementare metodi source

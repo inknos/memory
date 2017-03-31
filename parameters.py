@@ -4,7 +4,7 @@ from Tools import *
 
 def loadParameters(self):
 
-    # Projct version
+    # Projct version: contained in commonVariables.py
     try:
         projectVersion = str(common.projectVersion)
     except:
@@ -17,6 +17,12 @@ def loadParameters(self):
     else:
         random.seed(mySeed)
 
+    """
+
+    nAgents, worldXSize, worldYSize are variables from the object ModelSwarm in ModelSwarm.py 
+
+    
+    """
     self.nAgents = input("How many 'bland' agents? ")
 
     #self.worldXSize= input("X size of the world? ")

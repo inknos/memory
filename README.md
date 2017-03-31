@@ -2,7 +2,7 @@
 university abm project
 
 italian description
-# Progetto di econofisica: Effetti della memoria nel news spreading
+# Progetto di econofisica: Effetti della memoria nel *news spreading*
 ## Roberto Bertilone, Francesco Fanchin, Nicola Sella
 In una rete reale ci chiediamo se la memoria di notizie lette possa influenzare la dinamica ed
 eventualmente creare effetti di segregazione. Per modellizzare questo fenomeno di diffusione

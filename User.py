@@ -6,9 +6,10 @@ from Agent import *
 
 class User(Agent):
 
-    def __init__(self, number,myWorldState, xPos, yPos, lX =-20,rX=19, bY=-20,tY=19, agType=""):
-
-        Agent.__init__(self, number,myWorldState, xPos, yPos, lX =-20,rX=19, bY=-20,tY=19, agType=agType)
+    #ptpt def __init__(self, number,myWorldState, xPos, yPos, lX =-20,rX=19, bY=-20,tY=19, agType=""):
+    def __init__(self, number,myWorldState, agType=""):
+        #ptpt Agent.__init__(self, number,myWorldState, xPos, yPos, lX =-20,rX=19, bY=-20,tY=19, agType=agType)
+        Agent.__init__(self, number,myWorldState, agType=agType)
         # it is anyway possible to initilize the environment directly,
         # commenting the call above to the super class and uncommenting
         # the rows below

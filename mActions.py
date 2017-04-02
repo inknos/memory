@@ -44,12 +44,12 @@ def do1(address):
     # previous mActions.py files
 
 
-def createTheAgent(self, line, num, leftX, rightX, bottomY, topY, agType):
+#ptpt
+def createTheAgent(self, line, num, agType):
     # explictly pass self, here we use a function
-    # print "leftX,rightX,bottomY,topY", leftX,rightX,bottomY,topY
 
     if len(line.split()) == 1:
-        anAgent = Agent(num, self.worldState,random.randint(leftX, rightX),random.randint(bottomY, topY), leftX, rightX, bottomY, topY, agType=agType)
+        anAgent = Agent(num, self.worldState,agType=agType)
         self.agentList.append(anAgent)
 
     else:
@@ -57,7 +57,8 @@ def createTheAgent(self, line, num, leftX, rightX, bottomY, topY, agType):
         os.sys.exit(1)
 
 
-def createTheAgent_Class(self, line, num, leftX, rightX, bottomY, topY, agType, agClass):
+#ptpt def createTheAgent_Class(self, line, num, leftX, rightX, bottomY, topY, agType, agClass):
+def createTheAgent_Class(self, line, num, agType, agClass):
     # explictly pass self, here we use a function
     # print "leftX,rightX,bottomY,topY", leftX,rightX,bottomY,topY
 
@@ -70,7 +71,8 @@ def createTheAgent_Class(self, line, num, leftX, rightX, bottomY, topY, agType, 
 
     if len(line.split()) == 1:
         try:
-            exec("anAgent = "+agClass+"(num, self.worldState,random.randint(leftX,rightX),random.randint(bottomY,topY),leftX,rightX,bottomY,topY,agType=agType)")
+            #ptpt exec("anAgent = "+agClass+"(num, self.worldState,random.randint(leftX,rightX),random.randint(bottomY,topY),leftX,rightX,bottomY,topY,agType=agType)")
+            exec("anAgent = "+agClass+"(num, self.worldState,agType=agType)")
             self.agentList.append(anAgent)
         except:
             print "Argument error creating an instance of class", agClass

@@ -19,11 +19,13 @@ def loadParameters(self):
 
     """
 
-    nAgents, worldXSize, worldYSize are variables from the object ModelSwarm in ModelSwarm.py 
+    nAgents, worldXSize, worldYSize are variables from the object ModelSwarm in ModelSwarm.py
 
-    
+
     """
-    self.nAgents = input("How many 'bland' agents? ")
+    #ptptself.nAgents = input("How many 'bland' agents? ")
+    self.nAgents = 0
+    print "No 'bland' agents"
 
     #self.worldXSize= input("X size of the world? ")
     self.worldXSize = 50

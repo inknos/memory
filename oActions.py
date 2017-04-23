@@ -1,9 +1,13 @@
 from Tools import *
 from Agent import *
+import graph as graph
 
 
 def do1b(address):
-    pass
+
+    #basic action to visualize the networkX output
+    graph.openClearNetworkXdisplay()
+    graph.drawGraph()
 
 
 def do2a(address, cycle):

@@ -1,6 +1,6 @@
 # parameters.py
 from Tools import *
-
+import commonVar as common
 
 def loadParameters(self):
 
@@ -34,5 +34,22 @@ def loadParameters(self):
     #self.worldYSize= input("Y size of the world? ")
     self.worldYSize = 50
     print "Y size of the world? ", self.worldYSize
+
+    common.N_SOURCES = input("How many sources? (default = "+str(common.N_SOURCES)+") ")
+    file = open(common.path+"/sources.txt","w")
+    for i in range(common.N_SOURCES):
+        file.write(str(i)+'\n')
+    file.close()
+    
+    common.N_USERS = input("How many users? (default = "+str(common.N_USERS)+") ")
+    file = open(common.path+ "/users.txt","w")
+    for i in range(common.N_USERS):
+        file.write(str(common.N_SOURCES + i)+'\n')
+    file.close()
+
+    common.averageDegree = input("Enter average degree for users? (default = "+str(common.averageDegree)+") ")
+    common.P_a = float(common.averageDegree) / common.N_USERS
+    common.P_s = 10 * common.P_a
+    common.N_AGENTS = common.N_USERS + common.N_SOURCES
 
     self.nCycles = input("How many cycles? (0 = exit) ")

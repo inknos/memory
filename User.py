@@ -6,34 +6,9 @@ from Agent import *
 
 class User(Agent):
 
-    #ptpt def __init__(self, number,myWorldState, xPos, yPos, lX =-20,rX=19, bY=-20,tY=19, agType=""):
-    def __init__(self, number,myWorldState, agType=""):
-        #ptpt Agent.__init__(self, number,myWorldState, xPos, yPos, lX =-20,rX=19, bY=-20,tY=19, agType=agType)
-        Agent.__init__(self, number,myWorldState, agType=agType)
-        # it is anyway possible to initilize the environment directly,
-        # commenting the call above to the super class and uncommenting
-        # the rows below
+    def __init__(self, number, myWorldState, agType=""):
 
-        """
-        # the environment
-        self.agOperatingSets=[]
-        self.number = number
-        self.lX = lX
-        self.rX = rX
-        self.bY = bY
-        self.tY = tY
-        if myWorldState != 0:
-           self.myWorldState = myWorldState
-        self.agType=agType
-        # the agent
-        self.xPos = xPos
-        self.yPos = yPos
-        print "agent", self.agType, "#", self.number, \
-              "has been created at", self.xPos, ",", self.yPos
-
-        # it is possible to avoid the assignment above sending init
-        # order to the superclass
-        """
+        Agent.__init__(self, number, myWorldState, agType=agType)
 
     # sleeping
     def sleep(self, **d):

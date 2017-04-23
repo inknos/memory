@@ -1,17 +1,17 @@
 # 1
-users eat
-sources dance
+bland eat
+bland dance
 # 2
 all sleep
 # 3
-all sleep
+tasteD sleep
 # 4
 all 0.5 dance
-all eat
+tasteC eat
 # 5
 all eat
 all dance
 # 7
-all 0.5 dance
+tasteA 0.5 dance
 # 8
-all dance
+tasteB dance

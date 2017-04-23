@@ -33,11 +33,9 @@ def initializeEdges():
                 elif common.G.nodes()[i].number >= common.N_SOURCES and common.G.nodes()[j].number >= common.N_SOURCES:
                     if np.random.random_sample() < common.P_a:
                         common.G.add_edge(common.G.nodes()[i], common.G.nodes()[j])
-                        print '#2'
                 else: 
                     if np.random.random_sample() < common.P_s:
                         common.G.add_edge(common.G.nodes()[i], common.G.nodes()[j])
-                        print '#3'
 
 
 # using networkX and matplotlib case

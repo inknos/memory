@@ -36,13 +36,13 @@ def loadParameters(self):
     print "Y size of the world? ", self.worldYSize
 
     common.N_SOURCES = input("How many sources? (default = "+str(common.N_SOURCES)+") ")
-    file = open(common.path+"/sources.txt","w")
+    file = open(common.project+"/sources.txt","w")
     for i in range(common.N_SOURCES):
         file.write(str(i)+'\n')
     file.close()
     
     common.N_USERS = input("How many users? (default = "+str(common.N_USERS)+") ")
-    file = open(common.path+ "/users.txt","w")
+    file = open(common.project+ "/users.txt","w")
     for i in range(common.N_USERS):
         file.write(str(common.N_SOURCES + i)+'\n')
     file.close()

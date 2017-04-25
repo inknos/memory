@@ -9,6 +9,7 @@ N_USERS = 100
 N_SOURCES = 2
 N_AGENTS = N_USERS + N_SOURCES
 
+STATE_DIMENSION = 6
 
 averageDegree = 1.1
 

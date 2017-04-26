@@ -21,5 +21,6 @@ projectVersion = 0.0
 
 toBeExecuted = "print 'Goodbye'"
 
+dim=3
 
 path = "/home/nik/memory"

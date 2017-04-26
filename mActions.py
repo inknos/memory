@@ -80,6 +80,7 @@ def createTheAgent_Class(self, line, num, agType, agClass):
 
     else:
         print "Error in file "+agType+".txt"
+        print "Error:", sys.exc_info()[0]
         os.sys.exit(1)
 
 

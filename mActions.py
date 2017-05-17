@@ -3,17 +3,17 @@ from Agent import *
 import os
 
 
-def do0(address):
+def do0(address): # reset in modelActions.txt
     self = address  # if necessary
     askEachAgentInCollection(address.agentList, Agent.setNewCycleValues)
 
 
-def do1(address):
+def do1(address): # move in modelActions.txt
     self = address  # if necessary
     # set in each call to the group
     self.actionGroup1.setName("move")
     # set in each call to the group
-
+    
     # keep safe the original list
     address.agentListCopy = address.agentList[:]
     # never in the same order (please comment if you want to keep
@@ -63,20 +63,21 @@ def createTheAgent_Class(self, line, num, agType, agClass):
     # print "leftX,rightX,bottomY,topY", leftX,rightX,bottomY,topY
 
     # loading classes with repetition (but only creating agents)
-    try:
-        exec("from "+agClass+" import *")
-    except:
-        print "Class", agClass, "not found."
-        os.sys.exit(1)
+    #try:
+    exec("from "+agClass+" import *")
+    #except:
+        #print "Class", agClass, "not found."
+        #os.sys.exit(1)
 
     if len(line.split()) == 1:
-        try:
+        #try:
             #ptpt exec("anAgent = "+agClass+"(num, self.worldState,random.randint(leftX,rightX),random.randint(bottomY,topY),leftX,rightX,bottomY,topY,agType=agType)")
-            exec("anAgent = "+agClass+"(num, self.worldState,agType=agType)")
-            self.agentList.append(anAgent)
-        except:
-            print "Argument error creating an instance of class", agClass
-            os.sys.exit(1)
+        exec("anAgent = "+agClass+"(num, self.worldState,agType=agType)")
+        self.agentList.append(anAgent)
+        #except:
+        #    print 
+        #    print "Argument error creating an instance of class", agClass
+        #    os.sys.exit(1)
 
     else:
         print "Error in file "+agType+".txt"

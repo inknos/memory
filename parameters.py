@@ -1,6 +1,7 @@
 # parameters.py
 from Tools import *
 import commonVar as common
+import numpy as np
 
 def loadParameters(self):
 
@@ -14,8 +15,10 @@ def loadParameters(self):
     mySeed = input("random number seed (1 to get it from the clock) ")
     if mySeed == 1:
         random.seed()
+        np.random.seed()
     else:
         random.seed(mySeed)
+        np.random.seed(mySeed)
 
     """
 

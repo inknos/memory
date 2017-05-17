@@ -1,8 +1,18 @@
 TODO 
 
-eliminare xPos yPos etc...
 come unire networkx SLAPP
 parole chiave -> do1 do2 etc...
 implementare membri agents comuni a users e sources
 implementare metodi di users
 implementare metodi source
+
+Do action pointer function
+
+Partire da memoria 1 e poi generalizzare
+lavorare su 24 ore
+arricchire rete di notizie
+tempo notizia ricevuta da utente
+
+
+funzione getNews tra utenti e utenti e tra fonti e utenti
+

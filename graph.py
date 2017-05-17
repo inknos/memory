@@ -53,7 +53,10 @@ def drawGraph():
         if common.G.nodes()[i] < common.N_SOURCES:
             c.append('red')
         else:
-            c.append('blue')
+            if common.G.nodes(data=True)[i][1]['agent'].active == True:
+                c.append('blue')
+            else:
+                c.append('grey')
 
     nx.draw(common.G, pos, node_size=25, node_color = c, edge_color='black')
 

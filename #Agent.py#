@@ -29,16 +29,25 @@ class Agent(SuperAgent):
 
         if graph.getGraph() == 0: graph.createGraph() # if first agent create the graph
         common.G.add_node(self.number, agent = self)  # adds himself
-        if common.cycle == 1: #create link only if you are only at the first step of the clock and if you are the last user
-            if len(common.G.nodes()) == common.N_AGENTS: graph.initializeEdges() # if last creates edges
+        if len(common.G.nodes()) == common.N_AGENTS: graph.initializeEdges() # if last creates edges
 
-        self.active = True
 
         print "agent", self.agType, "#", self.number, "has been created"
 
     def getGraph(self):
         return common.G
 
+    # return neighbour list. call with no arguments
+    def listNeighbours(self):
+        return common.G.neighbors(self.number)
+
+    # create link with a node with id a
+    def createEdge(self, a):
+        pass
+
+    # removes link with a node with id a
+    def removeEdge(self, a):
+        pass
 
 
 

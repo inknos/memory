@@ -1,9 +1,9 @@
-# memory
+# memory #
 university abm project
 
 italian description
-# Progetto di econofisica: Effetti della memoria nel *news spreading*
-## Roberto Bertilone, Francesco Fanchin, Nicola Sella
+# Progetto di econofisica: Effetti della memoria nel *news spreading* #
+## Roberto Bertilone, Francesco Fanchin, Nicola Sella ##
 In una rete reale ci chiediamo se la memoria di notizie lette possa influenzare la dinamica ed
 eventualmente creare effetti di segregazione. Per modellizzare questo fenomeno di diffusione
 implementiamo una rete assegnando comportamenti microscopici per cercare fenomeni
@@ -60,9 +60,52 @@ Ci aspettiamo di osservare correlazioni tra la lunghezza della memoria e variazi
 del sistema. Inoltre potrebbero emergere fenomeni di polarizzazione (segregazione, echo
 chambers) ampiamente studiati in letteratura, ma non completamente compresi.
 
-## Ulteriori sviluppi
+## Ulteriori sviluppi ##
 Ulteriori decisioni dell'agente potranno essere implementate in seguito con una rete neurale
 interna allenata a prendere vari tipi di decisione in merito alle preferenze sulle notizie o alla
 creazione/rimozione dei link.
 Un altro punto da analizzare potrebbe essere la topologia iniziale della rete: al variare di essa, si
 potrebbero indagare gli effetti macroscopici, in linea di principio molto diversi.
+
+## Agent or MAS? ##
+The agents can operate in their environment, making decisions and interacting each other. Initially
+there is no comunication protocol between them. They want to maximize their own benefit which is
+communicate and share news with "friends". There is no social or system behaviour, only individual.
+We can conclude that the system is not MAS.
+
+### agent feats ###
+The required characteristics of each agents are *veracity* and *benevolence*. No mobility is required. 
+The agents are rationals meaning that they try to reach their goal sympathyzind with their "neighbours"
+Each agent can receive information from the world or from another agent; it can also interact with 
+the world or with an agent.
+Their ability to modify the environment is the rimotion of a link in the social network.
+The only accessible variable for each agent is the clock number; they can also access something "near"
+them.
+
+### non deterministic environment ###
+The environment is not deterministic. Every action can produce different effects in a probabilistic
+way.
+The sphere of action of each agent is limited to its neighbours. They can have an opinion and read 
+near news. They have limited senses and sensors.
+Also the actions between agents are non deterministic and do not have the complete control over another
+agent.
+
+### static environment **?** ###
+### discrete or continous environment **?** ###
+
+### (mostly) reactive agents ###
+each agent makes local fair decisions: global behaviours may emerge.
+When active each agent can control the environment and reacto to the changes. It is possible
+that during his inactive state the environment has changed and the goal of the agent is unreachable.
+For this reason the agent can act in an unpredictable way and somehow irrational.
+
+### Do the agents have "Reactivity", "Proactiveness" and "Social Ability"? ###
+  * Reactivity: The agents can control the clock and the news spreading around them during the
+    evolution of the system
+  * Proactiveness: Each agent knows what his goal is and how to reach it
+  * Social Ability: They know how to send and recive news, to determine sympathy with neighbours
+
+
+### Set of environment states
+
+### Set of agent actions

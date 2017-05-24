@@ -1,5 +1,6 @@
-TODO 
+# TODO 
 
+## Tenere sempre presente
 come unire networkx SLAPP
 parole chiave -> do1 do2 etc...
 implementare membri agents comuni a users e sources
@@ -14,5 +15,9 @@ arricchire rete di notizie
 tempo notizia ricevuta da utente
 
 
-funzione getNews tra utenti e utenti e tra fonti e utenti
 
+## PER LAVORO CON TERNA
+Aggiungere add-remove link
+generalizzare funzioni
+scrivere documentazioni nelle funzioni
+funzione getNews tra utenti e utenti e tra fonti e utenti

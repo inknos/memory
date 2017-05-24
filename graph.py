@@ -65,7 +65,7 @@ def getGraph():
         return 0
 
 
-def drawGraph():
+def drawGraph(l=True):
 
     pos = nx.spring_layout(common.G)
     clearNetworkXdisplay()
@@ -79,16 +79,15 @@ def drawGraph():
             else:
                 c.append('grey')
 
-    nx.draw(common.G, pos, node_size=25, node_color=c, edge_color='black')
+    nx.draw(common.G, pos, node_size=60, node_color=c, edge_color='black')
 
-    # to draw labels
-    labels = {}
-    for i in range(len(common.G.nodes())):
-        labels[i] = common.G.nodes()[i]
-    nx.draw_networkx_labels(common.G, pos, labels, font_size=12)
+    if l is True:  # to draw labels
+        labels = {}
+        for i in range(len(common.G.nodes())):
+            labels[i] = common.G.nodes()[i]
+            nx.draw_networkx_labels(common.G, pos, labels, font_size=8)
 
-    # show plot
-    plt.show()
+    plt.show()  # show plot
 
     if common.graphicStatus == "PythonViaTerminal":
         plt.pause(0.1)

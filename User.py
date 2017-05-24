@@ -142,7 +142,7 @@ class User(Agent):
         """
 
         if self.active is False:
-            print "Agent ", self.number, " inactiiiiiive iiiis"
+            print("Agent ", self.number, " inactiiiiiive iiiis")
             self.inactiveTime += 1
             # se sono da troppo tempo inattivo mi attivo al turno dopo
             if self.inactiveTime > 7:
@@ -150,5 +150,5 @@ class User(Agent):
                     self.switchActivation()
             return 0
 
-        print "Agent ", self.number, " actiiiiiive iiiis"
+        print("Agent ", self.number, " actiiiiiive iiiis")
         self.activeTime += 1

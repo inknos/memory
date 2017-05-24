@@ -41,7 +41,7 @@ class Agent(SuperAgent):  # Agent must be the partent class of every object. Mus
 
         self.active = True
 
-        print "agent", self.agType, "#", self.number, "has been created"
+        print("agent", self.agType, "#", self.number, "has been created")
 
     def getGraph(self):
         return common.G

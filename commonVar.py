@@ -1,6 +1,6 @@
 # commonVar.py
 
-G = 0 #graph address
+G = 0  # graph address
 G_labels = 0
 G_edge_labels = 0
 
@@ -19,9 +19,9 @@ P_s = 1000. * P_a
 
 projectVersion = 0.0
 
-toBeExecuted = "print 'Goodbye'"
+toBeExecuted = "print ('Goodbye')"
 
-dim=10
+dim = 10
 
 path = "/home/nik/memory"
 

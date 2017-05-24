@@ -79,7 +79,8 @@ def drawGraph(l=True):
             else:
                 c.append('grey')
 
-    nx.draw(common.G, pos, node_size=60, node_color=c, edge_color='black')
+    nx.draw_networkx(common.G, pos, node_size=60,
+                     node_color=c, edge_color='black')
 
     if l is True:  # to draw labels
         labels = {}

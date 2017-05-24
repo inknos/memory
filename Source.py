@@ -53,10 +53,10 @@ class Source(Agent):
         # order. then it's normalized
         np.random.shuffle(self.state)
         self.state = self.state / self.state.sum()
-        print self.state
+        print(self.state)
         if (common.cycle / 24.).is_integer():
             self.generateNews()
-        print self.news
+        print(self.news)
 
     def generateNews(self, n=3, p=0.1):
         """
@@ -80,4 +80,4 @@ class Source(Agent):
             tmp = tmp / tmp.sum()
             self.news['n' + str(i)]['new'] = tmp
 
-        print self.number, " generateNews ", n
+        print(self.number, " generateNews ", n)

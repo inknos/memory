@@ -1,10 +1,12 @@
-# NewAgent.py
+# Source.py
 from Tools import *
 from agTools import *
 from Agent import *
 import numpy as np
 import commonVar as common
 import math
+import os
+import binascii
 
 
 class Source(Agent):
@@ -58,26 +60,56 @@ class Source(Agent):
             self.generateNews()
         print(self.news)
 
-    def generateNews(self, n=3, p=0.1):
+    def createNews(self, p=0.1):
+        """
+
+        creates one news 'near' to the source's mind state
+
+        """
+
+        tmp = self.state
+        for j in range(common.dim):
+            tmp[j] += 0.1 * np.random.random_sample()
+        tmp = tmp / tmp.sum()
+        return tmp
+
+    def generateNews(self, n=3):
         """
 
         generates a dictionary of n news:
         each new is distant from zero to p from
         the mind state of the source
 
+        news{
+            n0{
+                id-source:...,
+                date-source:...,
+                ...,
+                relevance:...
+            }
+
+            n1{...
+            }
+            ...
+        }
+
         """
 
         # the first part is the id-source, id-mittant, time
         for i in range(n):
             self.news['n' + str(i)] = {}
+            self.news['n' +
+                      str(i)]['id-news'] = binascii.b2a_hex(os.urandom(8))
             self.news['n' + str(i)]['id-source'] = self.number
             self.news['n' + str(i)]['id-sender'] = self.number
             self.news['n' + str(i)]['date-source'] = common.cycle
             self.news['n' + str(i)]['relevance'] = np.random.random_sample()
-            tmp = self.state
-            for j in range(common.dim):
-                tmp[j] += 0.1 * np.random.random_sample()
-            tmp = tmp / tmp.sum()
-            self.news['n' + str(i)]['new'] = tmp
-
+            self.news['n' + str(i)]['new'] = self.createNews()
         print(self.number, " generateNews ", n)
+
+    def hasNews(self, id_source=0, date=0):
+        for key in self.news:
+            if self.news[key]['id-source'] == id_source and self.news[key]['date-source'] == date:
+                return True
+            else:
+                return False

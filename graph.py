@@ -2,6 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import commonVar as common
 import numpy as np
+from networkx.drawing.nx_agraph import graphviz_layout
 
 
 def createGraph():
@@ -65,28 +66,35 @@ def getGraph():
         return 0
 
 
-def drawGraph(l=True):
+def drawGraph(n=True, e=True, l=True, clrs='state', static=True):
 
-    pos = nx.spring_layout(common.G)
     clearNetworkXdisplay()
     c = []
-    for i in range(len(common.G.nodes())):
-        if common.G.nodes()[i] < common.N_SOURCES:
-            c.append('red')
-        else:
-            if common.G.nodes(data=True)[i][1]['agent'].active is True:
-                c.append('blue')
-            else:
-                c.append('grey')
-
-    nx.draw_networkx(common.G, pos, node_size=60,
-                     node_color=c, edge_color='black')
-
-    if l is True:  # to draw labels
-        labels = {}
+    if clrs == 'state':  # draw colors thinking of state
         for i in range(len(common.G.nodes())):
-            labels[i] = common.G.nodes()[i]
-            nx.draw_networkx_labels(common.G, pos, labels, font_size=8)
+            if common.G.nodes(data=True)[i][1]['agent'].hasNews(date=1) is True:
+                c.append('yellow')
+                print("yellow")
+            else:
+                if common.G.nodes()[i] < common.N_SOURCES:
+                    c.append('red')
+                else:
+                    if common.G.nodes(data=True)[i][1]['agent'].active is True:
+                        c.append('blue')
+                    else:
+                        c.append('grey')
+
+    if static is True:
+        pos = graphviz_layout(common.G)
+
+    if n is True:  # draw nodes
+        nx.draw_networkx_nodes(common.G, pos, node_size=60, node_color=c)
+
+    if e is True:  # draw edges
+        nx.draw_networkx_edges(common.G, pos, edge_color='black')
+
+    if l is True:  # draw labels
+        nx.draw_networkx_labels(common.G, pos, font_size=8)
 
     plt.show()  # show plot
 

@@ -21,7 +21,7 @@ class User(Agent):
     def activate(self, p=0.5):
         """
 
-        activate the agent with a probability p
+        activate the agent with a probability p.
 
         """
         if np.random.random_sample() < p:

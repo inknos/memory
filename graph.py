@@ -75,7 +75,7 @@ def drawGraph(n=True, e=True, l=True, clrs='state', static=True):
             if common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=1, date=1) is True:
                 c.append('green')
                 print("green")
-            elif common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=0, date=1) is True:
+            elif common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=4, date=1) is True:
                 c.append('yellow')
                 print("yellow")
             else:

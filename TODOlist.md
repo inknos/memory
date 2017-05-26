@@ -21,3 +21,8 @@ Aggiungere add-remove link
 generalizzare funzioni
 scrivere documentazioni nelle funzioni
 funzione getNews tra utenti e utenti e tra fonti e utenti
+
+
+gestire doppia notizia arrivata
+diffusione utente utente
+diffusione e ricezione

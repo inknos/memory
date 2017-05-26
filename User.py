@@ -4,6 +4,7 @@ from agTools import *
 from Agent import *
 import commonVar as common
 import numpy as np
+import sys
 
 
 class User(Agent):
@@ -11,8 +12,7 @@ class User(Agent):
     def __init__(self, number, myWorldState, agType=""):
         Agent.__init__(self, number, myWorldState,
                        agType=agType)  # parent constructor
-        self.memory = np.array(
-            [{'date': -1, 'new': -1 * self.state, 'id-source': -1}])
+        self.database = {}
         self.active = False
         self.activate()
         self.inactiveTime = 0
@@ -112,33 +112,43 @@ class User(Agent):
         oldest: if memory is 'full' cut the oldest
 
         """
+
+        # read anything
         if news == {}:
             return False
+
         print(self.distance(news['new']))
         # if a news is beautiful forget the worse
-        if self.memory.shape[0] == common.memorySize:
+        if len(self.database) == common.memorySize:
             if self.distance(news['new']) > threshold:
                 tmin = 1
-                inde = 0
-                for i, m in enumerate(self.memory):
-                    if self.distance(m) < tmin:
-                        tmin = self.distance(m)
-                        inde = i
-                self.memory = np.delete(self.memory, inde, 0)
+                for key in self.database:
+                    if self.distance(self.database[key]['new']) < tmin:
+                        tmin = self.distance(self.database[key]['new'])
+                del(self.database[key])
         # add element to memory
-        self.memory = np.append(self.memory, news)    # else append new
+        self.database[news['id-n']] = news    # else append new
+        print("Agent", self.number, "remembered", self.database)
         # cut memory
         if cutoldest is True:
             # while len memory > size of memory cut first element
-            while self.memory.shape[0] > common.memorySize:
-                self.memory = np.delete(self.memory, 0, 0)
+            while len(self.database) > common.memorySize:
+                tdate = sys.maxsize
+                kmin = 0
+                for key in self.database:
+                    if self.database[key]['date-creation'] < tdate:
+                        tdate = self.database[key]['date-creation']
+                        kmin = key
+                del(self.database[kmin])
         # random forget
         if np.random.random_sample() < rnd:
-            if self.memory.shape[0] == 1:
+            if self.database == {}:
                 pass
             else:
-                self.memory = np.delete(
-                    self.memory, np.random.randint(0, self.memory.shape[0]), 0)
+                forgot = self.database[random.choice(list(self.database))]
+                if forgot != news:
+                    print("Agent", self.number, "forgot", forgot)
+                    del(forgot)
         return True
 
     def switchActivation(self):
@@ -187,7 +197,7 @@ class User(Agent):
     def getAllNewsFromSource(self, n):
         for i, j in enumerate(common.G.nodes()):
             if j == n:
-                return common.G.nodes(data=True)[i][1]['agent'].news
+                return common.G.nodes(data=True)[i][1]['agent'].database
 
     def getAllNewsFromUser(self, n):
         """
@@ -224,6 +234,7 @@ class User(Agent):
             self.inactiveTime += 1
             # se sono da troppo tempo inattivo mi attivo al turno dopo
             self.becomeActive(t=3, p=0.08)
+            return 0
 
         print("Agent ", self.number, " is active")
         self.activeTime += 1
@@ -237,14 +248,10 @@ class User(Agent):
         print("#5")
 
     def hasNews(self, id_source=0, date=1):
-        """
-
-        overload of hasNews(self, id_source=0, date=1)
-        in Agent.py
-
-        """
-        for m in self.memory:
-            if m['id-source'] == id_source and m['date-source'] == date:
+        if self.database == {}:
+            return False
+        for key in self.database:
+            if self.database[key]['id-source'] == id_source and self.database[key]['date-creation'] == date:
                 return True
             else:
                 return False
@@ -262,5 +269,4 @@ class User(Agent):
         for key in newsdict:
             if self.distance(newsdict[key]['new']) > temp:
                 temp = self.distance(newsdict[key]['new'])
-
         return newsdict[key]

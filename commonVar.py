@@ -26,3 +26,5 @@ dim = 10
 path = "/home/nik/memory"
 
 memorySize = 5
+
+verbose = False

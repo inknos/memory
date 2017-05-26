@@ -40,17 +40,20 @@ class Agent(SuperAgent):  # Agent must be the partent class of every object. Mus
                 graph.initializeEdges()  # if last creates edges
 
         self.active = True
-
+        self.databaseCols = ['id-n',
+                             'new',
+                             'id-source',
+                             'date-creation',
+                             'relevance',
+                             'id-send',
+                             'date-send',
+                             'id-recive',
+                             'date-recive']
+        self.database = {}
         print("agent", self.agType, "#", self.number, "has been created")
 
     def getGraph(self):
         return common.G
 
     def hasNews(self, id_source=0, date=1):
-        """
-
-        return True if agent contains the news
-        needs to be overloaded
-
-        """
-        return False
+        pass

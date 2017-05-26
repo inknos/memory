@@ -46,7 +46,7 @@ class Agent(SuperAgent):  # Agent must be the partent class of every object. Mus
     def getGraph(self):
         return common.G
 
-    def hasNews(self, id_source=0, date=0):
+    def hasNews(self, id_source=0, date=1):
         """
 
         return True if agent contains the news

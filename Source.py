@@ -56,7 +56,7 @@ class Source(Agent):
         np.random.shuffle(self.state)
         self.state = self.state / self.state.sum()
         print(self.state)
-        if (common.cycle / 24.).is_integer():
+        if (common.cycle / 100.).is_integer():
             self.generateNews()
         print(self.news)
 
@@ -73,7 +73,7 @@ class Source(Agent):
         tmp = tmp / tmp.sum()
         return tmp
 
-    def generateNews(self, n=3):
+    def generateNews(self, n=1):
         """
 
         generates a dictionary of n news:
@@ -107,7 +107,7 @@ class Source(Agent):
             self.news['n' + str(i)]['new'] = self.createNews()
         print(self.number, " generateNews ", n)
 
-    def hasNews(self, id_source=0, date=0):
+    def hasNews(self, id_source=0, date=1):
         for key in self.news:
             if self.news[key]['id-source'] == id_source and self.news[key]['date-source'] == date:
                 return True

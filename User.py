@@ -35,7 +35,7 @@ class User(Agent):
         return neighbour list. call with no arguments
 
         """
-        print(common.G.neighbors(self.number))
+        print("list neighbours", common.G.neighbors(self.number))
         return common.G.neighbors(self.number)
 
     def listNeighboursNode(self, n):
@@ -112,7 +112,8 @@ class User(Agent):
         oldest: if memory is 'full' cut the oldest
 
         """
-        print("#1")
+        if news == {}:
+            return False
         print(self.distance(news['new']))
         # if a news is beautiful forget the worse
         if self.memory.shape[0] == common.memorySize:
@@ -124,18 +125,13 @@ class User(Agent):
                         tmin = self.distance(m)
                         inde = i
                 self.memory = np.delete(self.memory, inde, 0)
-        print("#2")
-
         # add element to memory
         self.memory = np.append(self.memory, news)    # else append new
-
-        print("#3")
         # cut memory
         if cutoldest is True:
             # while len memory > size of memory cut first element
             while self.memory.shape[0] > common.memorySize:
                 self.memory = np.delete(self.memory, 0, 0)
-        print("qui")
         # random forget
         if np.random.random_sample() < rnd:
             if self.memory.shape[0] == 1:
@@ -143,7 +139,7 @@ class User(Agent):
             else:
                 self.memory = np.delete(
                     self.memory, np.random.randint(0, self.memory.shape[0]), 0)
-        print("fine")
+        return True
 
     def switchActivation(self):
         """
@@ -174,12 +170,18 @@ class User(Agent):
         l = self.listNeighbours()
         for ne in l:
             if self.isUser(ne):
-                temp.update(self.chooseNewsFromUser(ne))
+                temp.update(self.getAllNewsFromUser(ne))
             else:
                 temp.update(self.getAllNewsFromSource(ne))
+
+        """
+        # remove old news
         for key in temp:
             if common.cycle - temp[key]['date-source'] > old:
                 del temp[key]
+        if temp == {}:
+            temp = {'empty':{}}
+        """
         return temp
 
     def getAllNewsFromSource(self, n):
@@ -187,13 +189,28 @@ class User(Agent):
             if j == n:
                 return common.G.nodes(data=True)[i][1]['agent'].news
 
-    def chooseNewsFromUser(self, n):
+    def getAllNewsFromUser(self, n):
         """
 
         TODO
 
         """
+        # for i, j in enumerate(common.G.nodes()):
+        #   if j == n:
+        #        pass
         return {}
+
+    def becomeActive(self, t=7, p=0.08):
+        if self.inactiveTime > t:
+            if np.random.random_sample() < self.inactiveTime * p:
+                self.switchActivation()
+
+    def becomeInactive(self, t=2, p=0.08, tired=False, tiredness=1.5):
+        if tired is True:
+            p = p * tiredness
+        if self.activeTime > t:
+            if np.random.random_sample() < self.activeTime * p:
+                self.switchActivation()
 
     def firstAction(self):
         """
@@ -206,27 +223,44 @@ class User(Agent):
             print("Agent ", self.number, " is inactive")
             self.inactiveTime += 1
             # se sono da troppo tempo inattivo mi attivo al turno dopo
-            if self.inactiveTime > 7:
-                if np.random.random_sample() < self.inactiveTime * 0.08:
-                    self.switchActivation()
-            return 0
+            self.becomeActive(t=3, p=0.08)
 
         print("Agent ", self.number, " is active")
         self.activeTime += 1
+        print("#1")
         newsToChose = self.readNews()
-        iWantToRemember = {}
-        temp = -1
-        for key in newsToChose:
-            if self.distance(newsToChose[key]['new']) > temp:
-                temp = self.distance(newsToChose[key]['new'])
-                iWantToRemember = newsToChose[key]
-        self.remember(iWantToRemember)
-        self.switchActivation()
+        print("#2")
+        iWantToRemember = self.chooseNews(newsToChose)
+        print("#3")
+        print("#4")
+        self.becomeInactive(tired=self.remember(iWantToRemember))
+        print("#5")
 
-    def hasNews(self, id_source=0, date=0):
-        if self.memory != np.array([{'date': -1, 'new': -1 * self.state, 'id-source': -1}]):
-            for m in self.memory:
-                if m['id-source'] == id_source and m['date-source'] == date:
-                    return True
-                else:
-                    return False
+    def hasNews(self, id_source=0, date=1):
+        """
+
+        overload of hasNews(self, id_source=0, date=1)
+        in Agent.py
+
+        """
+        for m in self.memory:
+            if m['id-source'] == id_source and m['date-source'] == date:
+                return True
+            else:
+                return False
+
+    def chooseNews(self, newsdict):
+        """
+
+        takes dict of dicts as argument
+        returns the best internal dict according to the distance
+
+        """
+        if newsdict == {}:
+            return newsdict
+        temp = -1
+        for key in newsdict:
+            if self.distance(newsdict[key]['new']) > temp:
+                temp = self.distance(newsdict[key]['new'])
+
+        return newsdict[key]

@@ -72,7 +72,10 @@ def drawGraph(n=True, e=True, l=True, clrs='state', static=True):
     c = []
     if clrs == 'state':  # draw colors thinking of state
         for i in range(len(common.G.nodes())):
-            if common.G.nodes(data=True)[i][1]['agent'].hasNews(date=1) is True:
+            if common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=1, date=1) is True:
+                c.append('green')
+                print("green")
+            elif common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=0, date=1) is True:
                 c.append('yellow')
                 print("yellow")
             else:

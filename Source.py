@@ -7,6 +7,7 @@ import commonVar as common
 import math
 import os
 import binascii
+import pandas as pd
 
 
 class Source(Agent):
@@ -76,7 +77,7 @@ class Source(Agent):
     def generateNews(self, n=1):
         """
 
-        generates a dictionary of n news:
+        generates a database of n news:
         each new is distant from zero to p from
         the mind state of the source
 
@@ -97,19 +98,19 @@ class Source(Agent):
 
         # the first part is the id-source, id-mittant, time
         for i in range(n):
-            self.news['n' + str(i)] = {}
-            self.news['n' +
-                      str(i)]['id-news'] = binascii.b2a_hex(os.urandom(8))
-            self.news['n' + str(i)]['id-source'] = self.number
-            self.news['n' + str(i)]['id-sender'] = self.number
-            self.news['n' + str(i)]['date-source'] = common.cycle
-            self.news['n' + str(i)]['relevance'] = np.random.random_sample()
-            self.news['n' + str(i)]['new'] = self.createNews()
+            print("list init")
+            tempList = 9 * [0]
+            tempList[0] = binascii.b2a_hex(os.urandom(8))
+            tempList[1] = self.createNews()
+            tempList[2] = self.number
+            tempList[3] = common.cycle
+            tempList[4] = np.random.random_sample()
+            tempList[5] = self.number
+            tempList[6] = common.cycle
+            tempList[7] = self.number
+            tempList[8] = common.cycle
+            print("list mid")
+            self.database = self.database.append(pd.DataFrame(
+                [tempList], columns=self.databaseCols), ignore_index=True)
+            print("list end")
         print(self.number, " generateNews ", n)
-
-    def hasNews(self, id_source=0, date=1):
-        for key in self.news:
-            if self.news[key]['id-source'] == id_source and self.news[key]['date-source'] == date:
-                return True
-            else:
-                return False

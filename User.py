@@ -4,6 +4,7 @@ from agTools import *
 from Agent import *
 import commonVar as common
 import numpy as np
+import pandas as pd
 
 
 class User(Agent):
@@ -11,8 +12,7 @@ class User(Agent):
     def __init__(self, number, myWorldState, agType=""):
         Agent.__init__(self, number, myWorldState,
                        agType=agType)  # parent constructor
-        self.memory = np.array(
-            [{'date': -1, 'new': -1 * self.state, 'id-source': -1}])
+
         self.active = False
         self.activate()
         self.inactiveTime = 0
@@ -112,33 +112,30 @@ class User(Agent):
         oldest: if memory is 'full' cut the oldest
 
         """
-        if news == {}:
-            return False
-        print(self.distance(news['new']))
+
         # if a news is beautiful forget the worse
-        if self.memory.shape[0] == common.memorySize:
+        if self.database.shape[0] == common.memorySize:
             if self.distance(news['new']) > threshold:
                 tmin = 1
-                inde = 0
-                for i, m in enumerate(self.memory):
-                    if self.distance(m) < tmin:
-                        tmin = self.distance(m)
-                        inde = i
-                self.memory = np.delete(self.memory, inde, 0)
+                imin = 0
+                for index, row in self.database.iterrows():
+                    # print(self.database.loc[index,])
+                    if self.distance(self.database[index]['new']) < tmin:
+                        tmin = self.distance(self.database[index]['new'])
+                        imin = index
+                self.database = self.database.drop([imin])
         # add element to memory
-        self.memory = np.append(self.memory, news)    # else append new
+        self.database.append(news, ignore_index=True)    # else append new
         # cut memory
         if cutoldest is True:
             # while len memory > size of memory cut first element
-            while self.memory.shape[0] > common.memorySize:
-                self.memory = np.delete(self.memory, 0, 0)
+            while self.database.shape[0] > common.memorySize:
+                self.database = self.database[:-1]  # drop last line
+
         # random forget
         if np.random.random_sample() < rnd:
-            if self.memory.shape[0] == 1:
-                pass
-            else:
-                self.memory = np.delete(
-                    self.memory, np.random.randint(0, self.memory.shape[0]), 0)
+            self.database = self.database.drop(
+                [np.random.randint(0, self.database.shape[0])])
         return True
 
     def switchActivation(self):
@@ -166,13 +163,13 @@ class User(Agent):
 
         """
 
-        temp = {}
+        temp = pd.DataFrame(columns=self.databaseCols)
         l = self.listNeighbours()
         for ne in l:
             if self.isUser(ne):
-                temp.update(self.getAllNewsFromUser(ne))
+                temp.append(self.getAllNewsFromUser(ne), ignore_index=True)
             else:
-                temp.update(self.getAllNewsFromSource(ne))
+                temp.append(self.getAllNewsFromSource(ne), ignore_index=True)
 
         """
         # remove old news
@@ -198,7 +195,7 @@ class User(Agent):
         # for i, j in enumerate(common.G.nodes()):
         #   if j == n:
         #        pass
-        return {}
+        return pd.DataFrame(columns=self.databaseCols)
 
     def becomeActive(self, t=7, p=0.08):
         if self.inactiveTime > t:
@@ -224,6 +221,7 @@ class User(Agent):
             self.inactiveTime += 1
             # se sono da troppo tempo inattivo mi attivo al turno dopo
             self.becomeActive(t=3, p=0.08)
+            return 0
 
         print("Agent ", self.number, " is active")
         self.activeTime += 1
@@ -236,19 +234,6 @@ class User(Agent):
         self.becomeInactive(tired=self.remember(iWantToRemember))
         print("#5")
 
-    def hasNews(self, id_source=0, date=1):
-        """
-
-        overload of hasNews(self, id_source=0, date=1)
-        in Agent.py
-
-        """
-        for m in self.memory:
-            if m['id-source'] == id_source and m['date-source'] == date:
-                return True
-            else:
-                return False
-
     def chooseNews(self, newsdict):
         """
 
@@ -256,11 +241,12 @@ class User(Agent):
         returns the best internal dict according to the distance
 
         """
-        if newsdict == {}:
-            return newsdict
-        temp = -1
-        for key in newsdict:
-            if self.distance(newsdict[key]['new']) > temp:
-                temp = self.distance(newsdict[key]['new'])
 
-        return newsdict[key]
+        tmax = -1
+        imax = 0
+        for index, row in self.database.iterrows():
+            # print(self.database.loc[index,])
+            if self.distance(self.database[index]['new']) > tmax:
+                tmax = self.distance(self.database[index]['new'])
+                imax = index
+        return self.database[imax:imax + 1]

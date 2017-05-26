@@ -4,6 +4,7 @@ from agTools import *
 import graph as graph
 import commonVar as common
 import numpy as np
+import pandas as pd
 
 
 class Agent(SuperAgent):  # Agent must be the partent class of every object. Must inherit from SuperAgent
@@ -40,6 +41,16 @@ class Agent(SuperAgent):  # Agent must be the partent class of every object. Mus
                 graph.initializeEdges()  # if last creates edges
 
         self.active = True
+        self.databaseCols = ['id-n',
+                             'new',
+                             'id-source',
+                             'date-creation',
+                             'relevance',
+                             'id-send',
+                             'date-send',
+                             'id-recive',
+                             'date-recive']
+        self.database = pd.DataFrame(columns=self.databaseCols)
 
         print("agent", self.agType, "#", self.number, "has been created")
 
@@ -47,10 +58,4 @@ class Agent(SuperAgent):  # Agent must be the partent class of every object. Mus
         return common.G
 
     def hasNews(self, id_source=0, date=1):
-        """
-
-        return True if agent contains the news
-        needs to be overloaded
-
-        """
-        return False
+        return ((self.database['id-n'] == id_source) & (self.database['date-send'] == date)).any()

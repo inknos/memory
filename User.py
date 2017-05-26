@@ -5,6 +5,7 @@ from Agent import *
 import commonVar as common
 import numpy as np
 import sys
+import usefulFunctions as uf
 
 
 class User(Agent):

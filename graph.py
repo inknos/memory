@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import commonVar as common
 import numpy as np
 from networkx.drawing.nx_agraph import graphviz_layout
+import usefulFunctions as uf
 
 
 def createGraph():
@@ -74,10 +75,10 @@ def drawGraph(n=True, e=True, l=True, clrs='state', static=True):
         for i in range(len(common.G.nodes())):
             if common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=1, date=1) is True:
                 c.append('green')
-                print("green")
+                uf.vprint("green")
             elif common.G.nodes(data=True)[i][1]['agent'].hasNews(id_source=4, date=1) is True:
                 c.append('yellow')
-                print("yellow")
+                uf.vprint("yellow")
             else:
                 if common.G.nodes()[i] < common.N_SOURCES:
                     c.append('red')

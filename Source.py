@@ -114,3 +114,6 @@ class Source(Agent):
                 [tempList], columns=self.databaseCols), ignore_index=True)
             print("list end")
         print(self.number, " generateNews ", n)
+
+    def hasNews(self, id_source=0, date=0):
+        return Agent.hasNews(self, id_source, date)

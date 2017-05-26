@@ -134,8 +134,11 @@ class User(Agent):
 
         # random forget
         if np.random.random_sample() < rnd:
-            self.database = self.database.drop(
-                [np.random.randint(0, self.database.shape[0])])
+            if self.database.shape[0] == 0:
+                return True
+            else:
+                self.database = self.database.drop(
+                    [np.random.randint(0, self.database.shape[0])])
         return True
 
     def switchActivation(self):
@@ -165,11 +168,16 @@ class User(Agent):
 
         temp = pd.DataFrame(columns=self.databaseCols)
         l = self.listNeighbours()
+        print("a")
         for ne in l:
             if self.isUser(ne):
+                print("b")
                 temp.append(self.getAllNewsFromUser(ne), ignore_index=True)
+                print("c")
             else:
+                print("d")
                 temp.append(self.getAllNewsFromSource(ne), ignore_index=True)
+                print("e")
 
         """
         # remove old news
@@ -250,3 +258,6 @@ class User(Agent):
                 tmax = self.distance(self.database[index]['new'])
                 imax = index
         return self.database[imax:imax + 1]
+
+    def hasNews(self, id_source=0, date=0):
+        return Agent.hasNews(self, id_source, date)

@@ -58,4 +58,5 @@ class Agent(SuperAgent):  # Agent must be the partent class of every object. Mus
         return common.G
 
     def hasNews(self, id_source=0, date=1):
-        return ((self.database['id-n'] == id_source) & (self.database['date-send'] == date)).any()
+        return ((self.database['id-n'] == id_source) &
+                (self.database['date-send'] == date)).any()

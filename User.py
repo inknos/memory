@@ -25,6 +25,7 @@ class User(Agent):
         activate the agent with a probability p.
 
         """
+
         if np.random.random_sample() < p:
             self.active = False
         else:
@@ -36,6 +37,7 @@ class User(Agent):
         return neighbour list. call with no arguments
 
         """
+
         print("list neighbours", common.G.neighbors(self.number))
         return common.G.neighbors(self.number)
 
@@ -45,6 +47,7 @@ class User(Agent):
         return list of neughbours of a node n
 
         """
+
         return common.G.neighbors(n)
 
     def isUser(self, n):
@@ -53,6 +56,7 @@ class User(Agent):
         return True if node n is a user
 
         """
+
         if n < common.N_SOURCES:
             print(n, " is ", False)
             return False
@@ -66,6 +70,7 @@ class User(Agent):
         return state from agent in node n
 
         """
+
         return common.G.nodes(data=True)[n][1]['agent'].state
 
     def createEdge(self, n):
@@ -74,6 +79,7 @@ class User(Agent):
         create link with a node with id a
 
         """
+
         common.G.add_edge(self.number, n)
 
     def removeEdge(self, n):
@@ -82,6 +88,7 @@ class User(Agent):
         removes link with a node with id a
 
         """
+
         common.G.remove_edge(self.number, n)
 
     def distance(self, n, a='scalar'):
@@ -91,10 +98,13 @@ class User(Agent):
 
         if you want to use different distances use the parameter a.
 
+        n: np.array of memory size
+
         scalar: use scalar product
 
 
         """
+
         if a == 'scalar':
             return np.dot(self.state, n)
 
@@ -155,7 +165,7 @@ class User(Agent):
     def switchActivation(self):
         """
 
-        switches activation of the user
+        switches activation of the user and resets the counters
 
         """
 
@@ -170,10 +180,13 @@ class User(Agent):
         """
 
         read news from node n
-        return all the possible readable news in a dictionary
-        remove the oldest
+        return all the possible readable news in a dictionary of news
 
+
+        remove the oldest
         old: default 24. hours in which the news gets old
+
+        see 'getAllNewsFromSource' and 'getAllNewsFromUser'
 
         """
 
@@ -196,6 +209,16 @@ class User(Agent):
         return temp
 
     def getAllNewsFromSource(self, n):
+        """
+
+        return the source's database: all the news
+
+        return type: database of database
+
+        n: int, id of the agent
+
+        """
+
         for i, j in enumerate(common.G.nodes()):
             if j == n:
                 return common.G.nodes(data=True)[i][1]['agent'].database
@@ -203,20 +226,65 @@ class User(Agent):
     def getAllNewsFromUser(self, n):
         """
 
-        TODO
+        return the best news in the user's database
+
+        return type: database of datbase or empty database
+
+        n: int, id of the agents
 
         """
-        # for i, j in enumerate(common.G.nodes()):
-        #   if j == n:
-        #        pass
-        return {}
+
+        for i, j in enumerate(common.G.nodes()):
+            if j == n:
+                if common.G.nodes(data=True)[i][1]['agent'].database == {}:
+                    return {}
+                else:
+                    dmax = -1
+                    kmax = 0
+                    for key in common.G.nodes(data=True)[i][1]['agent'].database:
+                        if self.distance(common.G.nodes(data=True)[i][1]['agent'].database[key]['new']) > dmax:
+                            dmax = self.distance(common.G.nodes(data=True)[
+                                                 i][1]['agent'].database[key]['new'])
+                            kmax = key
+                return {common.G.nodes(data=True)[i][1]['agent'].database[kmax]['id-n']: common.G.nodes(data=True)[i][1]['agent'].database[kmax]}
 
     def becomeActive(self, t=7, p=0.08):
+        """
+
+        If user is inactive for some time t
+        become active with a probability p
+
+        t: threshold of inactiveTime. The user will not activate for sure
+        under the threshold
+
+        p: probability of activation
+
+        """
+
         if self.inactiveTime > t:
             if np.random.random_sample() < self.inactiveTime * p:
                 self.switchActivation()
 
     def becomeInactive(self, t=2, p=0.08, tired=False, tiredness=1.5):
+        """
+
+        If user is actie for some time t
+        become inactive with a probability p
+
+        if user did aome actions he is tired
+        tired and tiredness influences the probability of becoming inactive
+
+        t: threshold of activeTime. The user will not deactivate for sure
+        under the threshold
+
+        p: probability of deactivation
+
+        tired: True if the user has done some actions
+
+        tiredness: how much he is tired
+
+        """
+
         if tired is True:
             p = p * tiredness
         if self.activeTime > t:
@@ -231,7 +299,7 @@ class User(Agent):
         """
 
         if self.active is False:
-            print("Agent ", self.number, " is inactive")
+            uf.vprint("Agent ", self.number, " is inactive")
             self.inactiveTime += 1
             # se sono da troppo tempo inattivo mi attivo al turno dopo
             self.becomeActive(t=3, p=0.08)
@@ -249,6 +317,13 @@ class User(Agent):
         print("#5")
 
     def hasNews(self, id_source=0, date=1):
+        """
+
+        chech if user has a certain news inside
+        overloaded from Agent
+
+        """
+
         if self.database == {}:
             return False
         for key in self.database:
@@ -264,6 +339,7 @@ class User(Agent):
         returns the best internal dict according to the distance
 
         """
+
         if newsdict == {}:
             return newsdict
         temp = -1

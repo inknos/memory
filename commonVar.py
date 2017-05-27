@@ -6,12 +6,12 @@ G_edge_labels = 0
 
 N_TOPICS = 2
 N_USERS = 100
-N_SOURCES = 2
+N_SOURCES = 5
 N_AGENTS = N_USERS + N_SOURCES
 
 STATE_DIMENSION = 6
 
-averageDegree = 1.1
+averageDegree = 7
 
 P_a = float(averageDegree) / N_USERS
 P_s = 1000. * P_a

@@ -24,6 +24,7 @@ def initializeEdges():
     random initialization of edges
 
     """
+
     for i in range(len(common.G.nodes())):
         for j in range(len(common.G.nodes())):
             if j > i:
@@ -31,12 +32,12 @@ def initializeEdges():
                     pass
                 elif common.G.nodes()[i] >= common.N_SOURCES and common.G.nodes()[j] >= common.N_SOURCES:
                     if np.random.random_sample() < common.P_a:
-                        common.G.add_edge(
-                            common.G.nodes()[i], common.G.nodes()[j])
+                        common.G.add_edge(common.G.nodes()[i], common.G.nodes()[
+                                          j], weight=0.3 + 0.7 * np.random.random_sample())
                 else:
                     if np.random.random_sample() < common.P_s:
-                        common.G.add_edge(
-                            common.G.nodes()[i], common.G.nodes()[j])
+                        common.G.add_edge(common.G.nodes()[i], common.G.nodes()[
+                                          j], weight=0.3 + 0.7 * np.random.random_sample())
 
 
 # using networkX and matplotlib case
@@ -61,6 +62,7 @@ def getGraph():
     else returns zero
 
     """
+
     try:
         return common.G
     except:

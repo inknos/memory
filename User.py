@@ -5,6 +5,7 @@ from Agent import *
 import commonVar as common
 import numpy as np
 import sys
+import random
 import usefulFunctions as uf
 
 
@@ -162,6 +163,60 @@ class User(Agent):
                     del(forgot)
         return True
 
+    def findKeyMinMax(self, data, innerkey, minor=True):
+        """
+
+        Given a dict of dict and an innerkey 'findKeyMinMax' returns the
+        key of the minimum innerkey
+
+        minor: minimum if True, else, maximum
+
+        """
+
+        if minor is True:
+            tdist = sys.maxsize
+            kmin = 0
+            for key in data:
+                if data[key][innerkey] < tdist:
+                    tdist = data[key][innerkey]
+                    kmin = key
+            return data[kmin]
+        else:
+            tdist = -sys.maxsize
+            kmax = 0
+            for key in data:
+                if data[key][innerkey] > tdist:
+                    tdist = data[key][innerkey]
+                    kmax = key
+            return data[kmax]
+
+    def findKeyDistanceMinMax(self, data, innerkey, minor=True, a='scalar'):
+        """
+
+        Given a dict of dict and an innerkey 'findKeyMinMax' returns the
+        key of the minimum distance innerkey
+
+        minor: minimum if True, else, maximum
+
+        """
+
+        if minor is True:
+            tdist = sys.maxsize
+            kmin = 0
+            for key in data:
+                if self.distance(data[key][innerkey], a=a) < tdist:
+                    tdist = self.distance(data[key][innerkey], a=a)
+                    kmin = key
+            return data[kmin]
+        else:
+            tdist = -sys.maxsize
+            kmax = 0
+            for key in data:
+                if self.distance(data[key][innerkey], a=a) > tdist:
+                    tdist = self.distance(data[key][innerkey], a=a)
+                    kmax = key
+            return data[kmax]
+
     def switchActivation(self):
         """
 
@@ -291,6 +346,70 @@ class User(Agent):
             if np.random.random_sample() < self.activeTime * p:
                 self.switchActivation()
 
+    def checkActivation(self, t_active=2, t_inactive=7, p_active=0.08, p_inactive=0.08, tired=True, tiredness=1.5):
+        """
+
+        Activates a sleeping node
+        also checks active state with true or false
+
+        Possibly changeable in the future
+
+        """
+
+        if self.active is False:
+            uf.vprint("Agent", self.number, "is active")
+            self.inactiveTime += 1
+            self.becomeActive(t=t_inactive, p=p_inactive)
+            return False
+        else:
+            uf.vprint("Agent", self.number, "is active")
+            self.activeTime += 1
+            return True
+
+    def passiveDiffusion(self):
+        """
+
+        performs a passive diffuzion of news between 
+        all the nearest neighbours
+
+        """
+
+        newsToChose = self.readNews()
+        iWantToRemember = self.chooseNews(newsToChose)
+        self.becomeInactive(tired=self.remember(iWantToRemember))
+
+    def activeDiffusion(self):
+        """
+
+        performs active diffusion with the best news in memory
+        the spread goes in two directions
+
+        one to the neighbour with highest weight
+        the orher randomly to a neighbour
+
+        """
+
+        if len(self.database) == 0:
+            return False
+        bestNews = self.findKeyDistanceMinMax(
+            self.database, 'new', minor=False)
+        bestWeight = 0
+        bestNeighbour = self.number
+        for neighbour in self.listNeighbours():
+            if common.G.get_edge_data(*(self.number, neighbour))['weight'] > bestWeight:
+                bestWeight = common.G.get_edge_data(
+                    *(self.number, neighbour))['weight']
+                bestNeighbour = neighbour
+        print("#100000")
+        common.G.nodes(data=True)[bestNeighbour][1]['agent'].remember(bestNews)
+        print("#200000")
+        shuffledNeighbour = random.choice(self.listNeighbours())
+        print("2.50000")
+        common.G.nodes(data=True)[
+            shuffledNeighbour][1]['agent'].remember(bestNews)
+        print("#30000")
+        return True
+
     def firstAction(self):
         """
 
@@ -298,23 +417,9 @@ class User(Agent):
 
         """
 
-        if self.active is False:
-            uf.vprint("Agent ", self.number, " is inactive")
-            self.inactiveTime += 1
-            # se sono da troppo tempo inattivo mi attivo al turno dopo
-            self.becomeActive(t=3, p=0.08)
-            return 0
-
-        print("Agent ", self.number, " is active")
-        self.activeTime += 1
-        print("#1")
-        newsToChose = self.readNews()
-        print("#2")
-        iWantToRemember = self.chooseNews(newsToChose)
-        print("#3")
-        print("#4")
-        self.becomeInactive(tired=self.remember(iWantToRemember))
-        print("#5")
+        if self.checkActivation(t_inactive=3, p_inactive=0.08) is True:
+            self.passiveDiffusion()
+            self.activeDiffusion()
 
     def hasNews(self, id_source=0, date=1):
         """
